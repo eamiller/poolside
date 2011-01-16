@@ -1,0 +1,180 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ws_tornado — WebSocket Server based on Tornado &mdash; poolside v0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="poolside v0.1 documentation" href="../index.html" />
+    <link rel="up" title="Tornado, WebSockets, and a CouchDB Backend" href="index.html" />
+    <link rel="next" title="Convenient Data Visualization" href="../visualize/index.html" />
+    <link rel="prev" title="pykernel — Start an IPython Kernel Interpreter" href="pykernel.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../visualize/index.html" title="Convenient Data Visualization"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pykernel.html" title="pykernel — Start an IPython Kernel Interpreter"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">poolside v0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Tornado, WebSockets, and a CouchDB Backend</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-ws_tornado">
+<span id="ws-tornado-websocket-server-based-on-tornado"></span><h1><a class="reference internal" href="#module-ws_tornado" title="ws_tornado"><tt class="xref py py-mod docutils literal"><span class="pre">ws_tornado</span></tt></a> &#8212; WebSocket Server based on Tornado<a class="headerlink" href="#module-ws_tornado" title="Permalink to this headline">¶</a></h1>
+<p>Run a <a class="reference external" href="http://github.com/facebook/tornado">Tornado</a> server that 
+accepts HTML5 WebSocket connections.</p>
+<dl class="class">
+<dt id="ws_tornado.EchoWebSocket">
+<em class="property">class </em><tt class="descclassname">ws_tornado.</tt><tt class="descname">EchoWebSocket</tt><big>(</big><em>application</em>, <em>request</em>, <em>db_port</em>, <em>database</em><big>)</big><a class="headerlink" href="#ws_tornado.EchoWebSocket" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Tornado handler for connections to HTML5 WebSockets.</p>
+<dl class="method">
+<dt id="ws_tornado.EchoWebSocket.on_close">
+<tt class="descname">on_close</tt><big>(</big><big>)</big><a class="headerlink" href="#ws_tornado.EchoWebSocket.on_close" title="Permalink to this definition">¶</a></dt>
+<dd><p>React to the closing of a WebSocket connection.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ws_tornado.EchoWebSocket.on_message">
+<tt class="descname">on_message</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#ws_tornado.EchoWebSocket.on_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive and dispatch a message from the client side of a WebSocket.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ws_tornado.EchoWebSocket.open">
+<tt class="descname">open</tt><big>(</big><big>)</big><a class="headerlink" href="#ws_tornado.EchoWebSocket.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>On connection from a browser:</p>
+<ol class="arabic simple">
+<li>create a lock for this object writing to CouchDB</li>
+<li>make and start a</li>
+</ol>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ws_tornado.Responder">
+<em class="property">class </em><tt class="descclassname">ws_tornado.</tt><tt class="descname">Responder</tt><big>(</big><em>write_func</em>, <em>pipe_end</em>, <em>database</em>, <em>lock</em><big>)</big><a class="headerlink" href="#ws_tornado.Responder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive messages from a kernel process and output them to the client.
+Writing to CouchDB blocks this WebSocket connection.</p>
+<dl class="method">
+<dt id="ws_tornado.Responder.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="headerlink" href="#ws_tornado.Responder.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle messages read from a <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.Connection</span></tt>.</p>
+<p>Stop when an EOFError occurs.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ws_tornado.WebSocketApp">
+<em class="property">class </em><tt class="descclassname">ws_tornado.</tt><tt class="descname">WebSocketApp</tt><big>(</big><em>db_port</em>, <em>database</em><big>)</big><a class="headerlink" href="#ws_tornado.WebSocketApp" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Tornado application that accepts connections via WebSockets.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ws_tornado.main">
+<tt class="descclassname">ws_tornado.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#ws_tornado.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#module-ws_tornado" title="ws_tornado"><tt class="xref py py-mod docutils literal"><span class="pre">ws_tornado</span></tt></a> module&#8217;s main entry point.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ws_tornado.parse_arguments">
+<tt class="descclassname">ws_tornado.</tt><tt class="descname">parse_arguments</tt><big>(</big><big>)</big><a class="headerlink" href="#ws_tornado.parse_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process command line arguments using <tt class="xref py py-class docutils literal"><span class="pre">optparse.OptionParser</span></tt>.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pykernel.html"
+                        title="previous chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">pykernel</span></tt> &#8212; Start an IPython Kernel Interpreter</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../visualize/index.html"
+                        title="next chapter">Convenient Data Visualization</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/service/ws_tornado.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../visualize/index.html" title="Convenient Data Visualization"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pykernel.html" title="pykernel — Start an IPython Kernel Interpreter"
+             >previous</a> |</li>
+        <li><a href="../index.html">poolside v0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Tornado, WebSockets, and a CouchDB Backend</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, David Wyde, Chris Hart.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.6.
+    </div>
+  </body>
+</html>

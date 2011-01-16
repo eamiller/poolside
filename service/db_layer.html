@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>db_layer — Save Data to CouchDB &mdash; poolside v0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="poolside v0.1 documentation" href="../index.html" />
+    <link rel="up" title="Tornado, WebSockets, and a CouchDB Backend" href="index.html" />
+    <link rel="next" title="pykernel — Start an IPython Kernel Interpreter" href="pykernel.html" />
+    <link rel="prev" title="Tornado, WebSockets, and a CouchDB Backend" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pykernel.html" title="pykernel — Start an IPython Kernel Interpreter"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Tornado, WebSockets, and a CouchDB Backend"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">poolside v0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Tornado, WebSockets, and a CouchDB Backend</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-db_layer">
+<span id="db-layer-save-data-to-couchdb"></span><h1><a class="reference internal" href="#module-db_layer" title="db_layer"><tt class="xref py py-mod docutils literal"><span class="pre">db_layer</span></tt></a> &#8212; Save Data to CouchDB<a class="headerlink" href="#module-db_layer" title="Permalink to this headline">¶</a></h1>
+<p>Use CouchDB as a storage backend for notebooks.</p>
+<dl class="class">
+<dt id="db_layer.Methods">
+<em class="property">class </em><tt class="descclassname">db_layer.</tt><tt class="descname">Methods</tt><big>(</big><em>couch_port</em>, <em>database</em><big>)</big><a class="headerlink" href="#db_layer.Methods" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update CouchDB with changes from a frontend notebook.</p>
+<dl class="method">
+<dt id="db_layer.Methods.delete_cell">
+<tt class="descname">delete_cell</tt><big>(</big><em>cell_id</em><big>)</big><a class="headerlink" href="#db_layer.Methods.delete_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a cell from CouchDB.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Users can delete any cell, whether or not they own it.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="db_layer.Methods.save_cell">
+<tt class="descname">save_cell</tt><big>(</big><em>cell_id</em>, <em>fields</em><big>)</big><a class="headerlink" href="#db_layer.Methods.save_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store notebook cell documents in CouchDB.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>There are <strong>NO</strong> security measures at the moment.</p>
+<p>If a non-empty <tt class="xref py py-class docutils literal"><span class="pre">string</span></tt> or <tt class="xref py py-class docutils literal"><span class="pre">unicode</span></tt> is submitted 
+as the <cite>cell_id</cite>, it will be  accepted as the cell&#8217;s ID.</p>
+<p class="last">This will be fixed, but it&#8217;s a problem right now.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cell_id</strong> &#8211; A cell&#8217;s UUID, for both notebook frontends and CouchDB.</li>
+<li><strong>fields</strong> &#8211; A <tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt> of key-value pairs to add to this             CouchDB document.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If an empty string is provided as the <cite>cell_id</cite>, a new UUID is generated
+and a new cell created in the database.</p>
+<p>Other &#8220;incorrect&#8221; inputs will cause an immeidate return.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="db_layer.Methods.save_worksheet">
+<tt class="descname">save_worksheet</tt><big>(</big><em>worksheet_id</em>, <em>cell_list</em><big>)</big><a class="headerlink" href="#db_layer.Methods.save_worksheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a worksheet into CouchDB.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Two open instances of the same worksheet can overwrite         each other.</p>
+<p class="last">The parameter <cite>cell_list</cite> is generated on the client side,
+and there are currently no locks on the CouchDB documents.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>worksheet_id</strong> &#8211; A worksheet document&#8217;s UUID.</li>
+<li><strong>cell_list</strong> &#8211; A list of cell UUIDs contained by this worksheet.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="db_layer.new_id">
+<tt class="descclassname">db_layer.</tt><tt class="descname">new_id</tt><big>(</big><big>)</big><a class="headerlink" href="#db_layer.new_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a new UUID.</p>
+<p>Call this when a notebook cell is created.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Tornado, WebSockets, and a CouchDB Backend</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pykernel.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">pykernel</span></tt> &#8212; Start an IPython Kernel Interpreter</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/service/db_layer.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pykernel.html" title="pykernel — Start an IPython Kernel Interpreter"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Tornado, WebSockets, and a CouchDB Backend"
+             >previous</a> |</li>
+        <li><a href="../index.html">poolside v0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Tornado, WebSockets, and a CouchDB Backend</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, David Wyde, Chris Hart.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.6.
+    </div>
+  </body>
+</html>

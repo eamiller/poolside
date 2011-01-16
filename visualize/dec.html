@@ -1,0 +1,192 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dec — Wrapper Classes for Data Visualization &mdash; poolside v0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="poolside v0.1 documentation" href="../index.html" />
+    <link rel="up" title="Convenient Data Visualization" href="index.html" />
+    <link rel="next" title="viz_extension — Visualize JSON Data" href="viz_extension.html" />
+    <link rel="prev" title="Convenient Data Visualization" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="viz_extension.html" title="viz_extension — Visualize JSON Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Convenient Data Visualization"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">poolside v0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Convenient Data Visualization</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="dec-wrapper-classes-for-data-visualization">
+<h1><tt class="xref py py-mod docutils literal"><span class="pre">dec</span></tt> &#8212; Wrapper Classes for Data Visualization<a class="headerlink" href="#dec-wrapper-classes-for-data-visualization" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="dec.Viz">
+<em class="property">class </em><tt class="descclassname">dec.</tt><tt class="descname">Viz</tt><big>(</big><em>ext_dirs</em><big>)</big><a class="headerlink" href="#dec.Viz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamically visualize Python objects based on their <tt class="xref py py-class docutils literal"><span class="pre">type</span></tt>.</p>
+<p><cite>extdirs</cite> is a <tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of directories to search for &#8221;.py&#8221; files.
+Each function in these Python scripts should be decorated by 
+<a class="reference internal" href="#dec.VizDecor" title="dec.VizDecor"><tt class="xref py py-class docutils literal"><span class="pre">VizDecor</span></tt></a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>There is currently no way to choose between different     <tt class="xref py py-class docutils literal"><span class="pre">Viz</span></tt> extension functions that apply to the same <tt class="xref py py-class docutils literal"><span class="pre">type</span></tt>.</p>
+<p>Please DO NOT decorate two functions with the same type:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@VizDecor</span><span class="p">({</span><span class="nb">list</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">})</span>
+<span class="k">def</span> <span class="nf">small_table</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="nd">@VizDecor</span><span class="p">({</span><span class="nb">list</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">})</span>
+<span class="k">def</span> <span class="nf">big_table</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>In this example, calling <tt class="xref py py-meth docutils literal"><span class="pre">Viz()</span></tt> on a <tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> will not
+always produce the desired result.</p>
+<p class="last">This will be fixed in a future version, but it is broken right now.</p>
+</div>
+<dl class="method">
+<dt id="dec.Viz.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#dec.Viz.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call an appropriate extension function for <cite>obj</cite>.</p>
+<p>Dispatch a <a class="reference internal" href="#dec.VizDecor" title="dec.VizDecor"><tt class="xref py py-class docutils literal"><span class="pre">VizDecor</span></tt></a> function based on the
+<tt class="xref py py-class docutils literal"><span class="pre">type</span></tt> of <cite>obj</cite>.</p>
+<p>In a notebook frontend:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="n">Viz</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dec.VizDecor">
+<em class="property">class </em><tt class="descclassname">dec.</tt><tt class="descname">VizDecor</tt><big>(</big><em>accept_dict</em><big>)</big><a class="headerlink" href="#dec.VizDecor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that creates decorator functions for visualizable objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>accept_dict</strong> &#8211; <p>a <tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt> of the form <tt class="docutils literal"><span class="pre">{type:</span> <span class="pre">acceptorFunction}</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@VizDecor</span><span class="p">({</span><span class="nb">list</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">})</span>
+<span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&#39;* </span><span class="si">%s</span><span class="s"> *&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">acceptorFunction(obj)</span></tt> should return <tt class="xref docutils literal"><span class="pre">True</span></tt> when <cite>obj</cite> is 
+appropriate for the fuction being decorated.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="dec.VizDecor.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#dec.VizDecor.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate a visualization function <tt class="xref py py-func docutils literal"><span class="pre">func()</span></tt>.</p>
+<p><tt class="xref py py-func docutils literal"><span class="pre">func()</span></tt> should take a single argument: <cite>obj</cite>, a Python object
+to visualize.  This object must meet the constraints defined in
+<tt class="docutils literal"><span class="pre">self.accept_dict</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><a class="reference internal" href="#dec.Viz" title="dec.Viz"><tt class="xref py py-meth docutils literal"><span class="pre">Viz()</span></tt></a> can be called recursively by extension functions.</p>
+<p class="last">This allows for the visualization of nested data structures.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Convenient Data Visualization</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="viz_extension.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">viz_extension</span></tt> &#8212; Visualize JSON Data</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/visualize/dec.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="viz_extension.html" title="viz_extension — Visualize JSON Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Convenient Data Visualization"
+             >previous</a> |</li>
+        <li><a href="../index.html">poolside v0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Convenient Data Visualization</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, David Wyde, Chris Hart.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.6.
+    </div>
+  </body>
+</html>
